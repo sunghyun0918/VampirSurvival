@@ -7,17 +7,14 @@ public class Player : MonoBehaviour
     public Vector2 inputVec;
     public float speed;
     Rigidbody2D rigid;
+    SpriteRenderer spriter;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
-    }
-    void Start()
-    {
-        
+        spriter = GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         inputVec.x = Input.GetAxisRaw("Horizontal");
@@ -27,5 +24,12 @@ public class Player : MonoBehaviour
     {
         Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
+    }
+    void LateUpdate()
+    {
+        if(inputVec.x != 0)
+        {
+            spriter.flipX = inputVec.x < 0;
+        }
     }
 }
