@@ -7,5 +7,11 @@ AnimatorOverrideController:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ACPlayer1
-  m_Controller: {fileID: 0}
-  m_Clips: []
+  m_Controller: {fileID: 9100000, guid: 2c628b6f9b1d6ee4fb9e87583bacba0b, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 894d94ad047879a49aa2232eef1c8d04, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: c83d95bfe652c8f4680be95e85a05059, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 55ac4fc13e6d1d4438f961c89727c2a9, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: e1886a716cf9a0c42b0e4c0dd6cc8ec1, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: f4cd2303f0f8864459fd7a1aafd49dd3, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 0b8d56034c33f6c40999101181020cdf, type: 2}
