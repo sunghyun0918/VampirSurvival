@@ -44,7 +44,7 @@ public class Weapon : MonoBehaviour
     }
     public void LevelUP(float damage, int count)
     {
-        this.damage = damage;
+        this.damage = damage * Charactor.Damage;
         this.count += count;
 
         if (id == 0)
@@ -61,8 +61,8 @@ public class Weapon : MonoBehaviour
 
         // Property Set
         id = data.itemId;
-        damage = data.baseDamge;
-        count = data.baseCount;
+        damage = data.baseDamge * Charactor.Damage;
+        count = data.baseCount + Charactor.Count;
 
         for(int index=0; index < GameManager.instance.pool.prefabs.Length; index++)
         {
@@ -75,11 +75,11 @@ public class Weapon : MonoBehaviour
         switch(id)
         {
             case 0:
-                speed = 150;
+                speed = 150 * Charactor.WeaponSpeed;
                 Batch();
                 break;
             default:
-                speed = 0.3f;
+                speed = 0.5f * Charactor.WeaponRate;
                 break;
         }
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);

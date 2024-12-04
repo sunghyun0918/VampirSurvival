@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     public Vector2 inputVec;
     public float speed;
     public Scaner scaner;
-
+    public RuntimeAnimatorController[] animCon;
     Rigidbody2D rigid;
     SpriteRenderer spriter;
     Animator anim;
@@ -18,6 +18,12 @@ public class Player : MonoBehaviour
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         scaner = GetComponent<Scaner>();
+    }
+
+    void OnEnable()
+    {
+        speed *= Charactor.Speed;
+        anim.runtimeAnimatorController = animCon[GameManager.instance.playerId];
     }
 
     void Update()
