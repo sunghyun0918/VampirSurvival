@@ -13,21 +13,26 @@ public class Enemy : MonoBehaviour
     bool isLive;
 
     Rigidbody2D rigid;
+    Collider2D coll;
     Animator anim;
     SpriteRenderer spriter;
+    WaitForFixedUpdate wait;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        coll = GetComponent<Collider2D>();
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        wait = new WaitForFixedUpdate();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!isLive)
+        if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             return;
+
         Vector2 dirVec = target.position - rigid.position;
         Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
@@ -45,6 +50,8 @@ public class Enemy : MonoBehaviour
         target = GameManager.instance.player.GetComponent<Rigidbody2D>();
         isLive = true;
         health = maxHealth;
+        coll.enabled = true;
+        rigid.simulated = true;
     }
     public void Init(SpawnData data)
     {
@@ -52,21 +59,39 @@ public class Enemy : MonoBehaviour
         speed = data.speed;
         maxHealth = data.health;
         health = data.health;
+        anim.SetBool("Dead", false);
+        StopAllCoroutines();
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Bullet"))
+        if (!collision.CompareTag("Bullet") || !isLive)
             return;
         health -= collision.GetComponent<Bullet>().damage;
 
-        if(health > 0)
+        StartCoroutine(knockBack());
+        if (health > 0)
         {
-            // .. Live, Hit Action
+            anim.SetTrigger("Hit");
         }
         else
         {
-            Dead();
+            target = GameManager.instance.player.GetComponent<Rigidbody2D>();
+            isLive = false;
+            coll.enabled = false;
+            rigid.simulated = false;
+            spriter.sortingOrder = 2;
+            anim.SetBool("Dead", true);
+            GameManager.instance.kill++;
+            GameManager.instance.Getexp();
         }
+    }
+
+    IEnumerator knockBack()
+    {
+        yield return wait; // 하나의 물리 프레임을 딜레이
+        Vector3 playerPos = GameManager.instance.player.transform.position;
+        Vector3 dirVec = transform.position - playerPos;
+        rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
     }
     void Dead()
     {
