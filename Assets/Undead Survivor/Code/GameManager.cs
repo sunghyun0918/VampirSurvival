@@ -38,6 +38,9 @@ public class GameManager : MonoBehaviour
         player.gameObject.SetActive(true);
         uiLevelUp.Select(playerId % 2);
         Resume();
+
+        AudioManager.instance.PlayBgm(true);
+        AudioManager.instance.Playsfx(AudioManager.Sfx.Select);
     }
     public void GameOver()
     {
@@ -51,6 +54,8 @@ public class GameManager : MonoBehaviour
         uiResult.gameObject.SetActive(true);
         uiResult.Lose();
         Stop();
+        AudioManager.instance.PlayBgm(false);
+        AudioManager.instance.Playsfx(AudioManager.Sfx.Lose);
     }
     public void GameVictroy()
     {
@@ -61,12 +66,13 @@ public class GameManager : MonoBehaviour
     {
         isLive = false;
         enemyCleaner.SetActive(true);
-
         yield return new WaitForSeconds(0.5f);
 
         uiResult.gameObject.SetActive(true);
         uiResult.Win();
         Stop();
+        AudioManager.instance.PlayBgm(false);
+        AudioManager.instance.Playsfx(AudioManager.Sfx.Win);
     }
     public void GameRetry()
     {
